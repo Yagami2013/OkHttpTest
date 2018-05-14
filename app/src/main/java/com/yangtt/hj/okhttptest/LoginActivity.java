@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
+import com.networkbench.agent.impl.NBSAppAgent;
 import com.yangtt.hj.okhttptest.R;
 
 /**
@@ -13,6 +16,7 @@ import com.yangtt.hj.okhttptest.R;
  */
 
 public class LoginActivity extends Activity {
+    private static int countButtonClickTime=0;
     Config config=new Config();
     String TAG=config.getTAG();
     @Override
@@ -20,6 +24,23 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         Log.d(TAG,"LoginActivity onCreate...");
+
+        Button button_ok=(Button)findViewById(R.id.bt_ok);
+        button_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countButtonClickTime++;
+                NBSAppAgent.setUserCrashMessage("click ",""+countButtonClickTime);
+                Log.d(TAG,"Login button clicked"+countButtonClickTime);
+            }
+        });
+        Button button_test=(Button)findViewById(R.id.btnTest);
+        button_test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override

@@ -29,4 +29,9 @@ dependencies {
     compile 'com.squareup.okio:okio:1.13.0'
     compile 'com.google.code.gson:gson:2.3.1'
     implementation files('libs/umeng-analytics-7.4.1.jar')
+
+    //compile 'com.networkbench:tingyun-ea-agent-android:2.7.2'//私有化
+    compile "com.networkbench.newlens.agent.android:nbs.newlens.agent:2.8.3"
+    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.5'
 }

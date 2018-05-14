@@ -15,15 +15,26 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <data android:scheme="tingyun.3647" />
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
         </activity>
         <activity android:name=".Activity1">
         </activity>
+        <activity android:name=".DasaiActivity"></activity>
         <activity
             android:name=".FragmentRootActivity">
         </activity>
         <activity
+            android:name=".TestWebview">
+        </activity>
+        <activity
             android:persistableMode="persistAcrossReboots"
             android:name=".LoginActivity"></activity>
+
     </application>
     <meta-data android:value="5a431568b27b0a57a2000010" android:name="UMENG_APPKEY"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -32,5 +43,5 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 </manifest>

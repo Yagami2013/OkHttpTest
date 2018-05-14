@@ -7,13 +7,81 @@
     tools:context="com.yangtt.hj.okhttptest.MainActivity">
 
     <Button
-        android:layout_width="wrap_content"
+        android:id="@+id/openActivity"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:id="@+id/open"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="24dp"
+        android:text="OpenActivity"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_dasai"
+        android:layout_width="0dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="12dp"
+        android:text="ActionState0:Normal"
+        app:layout_constraintEnd_toEndOf="@+id/openActivity"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/openActivity"
+        app:layout_constraintTop_toBottomOf="@+id/openActivity" />
+
+    <Button
+        android:id="@+id/btn_crash"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="ActionType1:Crash"
+        app:layout_constraintEnd_toEndOf="@+id/btn_dasai"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/btn_dasai"
+        app:layout_constraintTop_toBottomOf="@+id/btn_dasai" />
+
+    <Button
+        android:id="@+id/btn_network_error"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="ActionType2:NetworkError"
+        app:layout_constraintEnd_toEndOf="@+id/btn_crash"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/btn_crash"
+        app:layout_constraintTop_toBottomOf="@+id/btn_crash" />
+
+    <Button
+        android:id="@+id/btn_http_error"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="ActionType3:HttpError"
+        app:layout_constraintEnd_toEndOf="@+id/btn_network_error"
+        app:layout_constraintStart_toStartOf="@+id/btn_network_error"
+        app:layout_constraintTop_toBottomOf="@+id/btn_network_error" />
+
+    <Button
+        android:id="@+id/btn_slow_action"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="ActionType4:SlowAction"
+        app:layout_constraintEnd_toEndOf="@+id/btn_http_error"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/btn_http_error"
+        app:layout_constraintTop_toBottomOf="@+id/btn_http_error" />
+
+    <Button
+        android:id="@+id/btn_async_slow_action"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="AsyncSlowAction"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btn_slow_action"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/btn_slow_action"
+        app:layout_constraintTop_toBottomOf="@+id/btn_slow_action"
+        app:layout_constraintVertical_bias="0.067" />
 
 </android.support.constraint.ConstraintLayout>

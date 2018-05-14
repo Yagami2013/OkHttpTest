@@ -30,6 +30,7 @@ public class OkHttpUtil {
                 .url(url)
                 .post(body)
                 .build();
+
         Log.d(TAG,"OkHttp Entry Time:"+System.currentTimeMillis());
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -40,7 +41,7 @@ public class OkHttpUtil {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                    Log.d(TAG,url+" res:"+ response.body().string());
+                    //Log.d(TAG,url+" res:"+ response.body().string());
                     Log.d(TAG,"ThreadName:"+Thread.currentThread().getName()+" Thread ID:"+Thread.currentThread().getId());
             }
         });
@@ -68,6 +69,9 @@ public class OkHttpUtil {
         try (Response response = client.newCall(request).execute()) {
             return response.body().string();
         }
+    }
+    public void head(){
+
     }
 
 }

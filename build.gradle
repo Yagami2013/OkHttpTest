@@ -8,7 +8,9 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0'
-        classpath fileTree(dir:'G:\\TingyunApp\\TestBuild\\gradlepath', include: ['*.jar'])
+        //classpath fileTree(dir:'G:\\TingyunApp\\TestBuild\\gradlepath\\2.9.0',include:['*.jar'])
+        classpath 'com.networkbench.newlens.agent.android:agent-gradle-plugin:2.8.3'
+        //classpath 'com.networkbench:tingyun-ea-agent-android-gradle-plugin:2.7.2'//私有化
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -16,6 +13,9 @@ import com.google.gson.Gson;
 import com.yangtt.hj.okhttptest.Data.Book;
 import com.yangtt.hj.okhttptest.Data.MISC;
 import com.yangtt.hj.okhttptest.Util.AsyncJsonUtil;
+import com.yangtt.hj.okhttptest.Util.Event;
+import com.yangtt.hj.okhttptest.Util.MQTTSend;
+import com.yangtt.hj.okhttptest.Util.MqttRecv;
 import com.yangtt.hj.okhttptest.Util.OkHttpUtil;
 import com.networkbench.agent.impl.NBSAppAgent;
 import com.yangtt.hj.okhttptest.Util.SQLiteUtil;
@@ -25,11 +25,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.math.BigDecimal;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     Config config =new Config();
@@ -40,8 +40,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG,"MainActivity onCreate...");
         setContentView(R.layout.activity_main);
-        /*intTingyun();*/
-        TestCrashAfterTingyun(getApplicationContext());
+        intTingyun();
+		Log.d(TAG,"Test jenkins****");
+        //TestCrashAfterTingyun(getApplicationContext());
         /*TestCrashBeforeTingyun(getApplicationContext());*/
         /*TestBitmapInCustomTrace();*/
 
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG,"MainActivity onResume...");
         /*MobclickAgent.onResume(this);*/
         /*Login();*/
-        TestAlertDilog();
+        /*TestAlertDilog();*/
         /*TestOpenFragment();*/
         /*TestSQL();*/
         /*TestCustomTrace();*/
@@ -82,7 +83,10 @@ public class MainActivity extends AppCompatActivity {
 
     void intTingyun(){
         Log.d(TAG,"initTingyun...");
-        NBSAppAgent.setLicenseKey("03a6a7ff19a04962b23c601d51dafc80")
+        //out key a32e68ea65c1471bab16804365189d56
+        //out-text_chengmy 1374145e792f408495390f14a7ea1ce4
+        //inner key:ytt-new:03a6a7ff19a04962b23c601d51dafc80
+        NBSAppAgent.setLicenseKey("858af234b934419a302a1f410656")
                 .withLocationServiceEnabled(true).enableLogging(true)
                 .start(this.getApplicationContext());
         NBSAppAgent.setUserIdentifier("*#06#");
@@ -116,17 +120,19 @@ public class MainActivity extends AppCompatActivity {
     }
     void TestOkHttpAsyncPost(){
         MISC misc=new MISC();
+        misc.setUid("Ytt2018*");
         Gson gson=new Gson();
         String body=gson.toJson(misc);
         OkHttpUtil client=new OkHttpUtil();
-        String[] urls={"https://testerhome.com",
+        String[] urls={//"https://testerhome.com",
                 "https://www.baidu.com",
                  "http://www.qq.com",
-                "http://www.tingyun.com",
-                "http://www.taobao.com",
-                "http://www.meituan.com",
-                "https://github.com/",
-                "http://www.google.com/"};
+               "http://www.tingyun.com"
+               // "http://www.taobao.com",
+               // "http://www.meituan.com",
+               // "https://github.com/",
+               // "http://www.google.com/"
+        };
         try {
             for (int i=0;i<urls.length;i++){
                 client.asyncPost(urls[i],body);
@@ -170,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
 /*        NBSAppAgent.endTracer("");*/
     }
     void TestCustomTrace(){
-        TestNestedCustomTrace(11);
+        TestNestedCustomTrace(2);
 
         /*TestMultiCustomTraceWithSameParam();*/
         /*TestCustomTraceAcrossFunction();*/
@@ -255,19 +261,78 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
     void buttonClickEvent(){
-        Button mbutton=(Button)findViewById(R.id.open);
-        mbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Login();
-                /*call10086();*/
+        ButtonOnClickListener listener=new ButtonOnClickListener();
+        Button mbutton=(Button)findViewById(R.id.openActivity);
+        mbutton.setOnClickListener(listener);
+        Button btnActionState0=(Button)findViewById(R.id.btn_dasai);
+        btnActionState0.setOnClickListener(listener);
+        Button btnActionState1=(Button)findViewById(R.id.btn_crash);
+        btnActionState1.setOnClickListener(listener);
+        Button btnActionState2=(Button)findViewById(R.id.btn_network_error);
+        btnActionState2.setOnClickListener(listener);
+        Button btnActionState3=(Button)findViewById(R.id.btn_http_error);
+        btnActionState3.setOnClickListener(listener);
+        Button btnActionState4=(Button)findViewById(R.id.btn_slow_action);
+        btnActionState4.setOnClickListener(listener);
+        Button btnAsyncSlowAction=(Button)findViewById(R.id.btn_async_slow_action);
+        btnAsyncSlowAction.setOnClickListener(listener);
+    }
+    private class ButtonOnClickListener implements View.OnClickListener{
+        public int random(){
+            Random r=new Random();
+            int num=r.nextInt(2);
+            return num;
+        }
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.openActivity:
+                    Login();break;
+                case R.id.btn_dasai:
+                    MqttRecv recv=new MqttRecv();
+                    MQTTSend sender=new MQTTSend();
+                    try {
+                        Thread.sleep(100);
+                        sender.send();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    //openDasaiActivity();
+                    break;
+                case R.id.btn_crash:
+                    Event.crash();
+                    break;
+                case R.id.btn_network_error:
+                    Event.networkError();
+                    Event.slowAction(4);
+                    break;
+                case R.id.btn_http_error:
+                    Event.httpError();
+                    break;
+                case R.id.btn_slow_action:
+                    Event.slowAction(4);
+                    break;
+                case R.id.btn_async_slow_action:
+                    //TestOkHttpAsyncPost();
+                    int flag=random();
+                    //Context context=(flag==0?getApplicationContext():MainActivity.this);
+                    Context context=getApplicationContext();
+                    Event.asyncSlow(5,context);
+                    break;
             }
-        });
+        }
     }
     void openNewActivity(){
         Intent intent=new Intent();
         intent.setClass(this,Activity1.class);
+        Log.d(TAG,"openNewActivity onCall...");
+        MainActivity.this.startActivity(intent);
+    }
+    void openDasaiActivity(){
+        Intent intent=new Intent();
+        intent.setClass(this, DasaiActivity.class);
         Log.d(TAG,"openNewActivity onCall...");
         MainActivity.this.startActivity(intent);
     }
@@ -342,9 +407,10 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG,"Second Start");
         }
     }
-    void call10086(){
-        Uri uri = Uri.parse("tel:10086");
-        Intent intent = new Intent(Intent.ACTION_DIAL, uri);
-        startActivity(intent);
+    void openWebview(){
+        Intent intent=new Intent();
+        intent.setClass(this,TestWebview.class);
+        Log.d(TAG,"TestWebview onCall...");
+        MainActivity.this.startActivity(intent);
     }
 }
