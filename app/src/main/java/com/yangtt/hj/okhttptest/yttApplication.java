@@ -44,7 +44,7 @@ public class yttApplication extends Application {
         return TAG;
     }
     public void intTingyun(Context context){
-        NBSAppAgent.setLicenseKey("03a6a7ff19a04962b23c601d51dafc80")
+        NBSAppAgent.setLicenseKey("")
                 .withLocationServiceEnabled(true)
                 .enableLogging(true)
                 .start(context);
